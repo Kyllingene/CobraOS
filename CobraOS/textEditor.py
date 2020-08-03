@@ -1,52 +1,80 @@
 from os.path import isfile
 import json
+import tkinter as tk
 
-file = input('File name (.txt, .json, .py): ')
-mode = input('Input mode (w, a, r, r+, x): ')
-stop = False
+textEditorWindow = tk.Tk()
+textEditorWindow.title('Text Editor - CobraOS')
 
-def writeToFile(filename, mode):
-    file = open(filename, mode)
-    stop = False
-    while stop == False:
-        text = input('>')
-        if text == ':stop:':
-            stop = True
-        else:
-            file.write('\n' + text)
-    file.close()
+#Main File Editation
+enterToFile = tk.Frame(height=300, width=200, master=textEditorWindow)
 
-if isfile(file) and mode == 'x':
-    print('File already exists.')
-else:
-    f = open(file, mode)
-if mode == 'r':
-    print(f.read())
-elif mode == 'w' or mode == 'a':
-    while stop == False:
-        text = input('>')
-        if text == ':stop:':
-            stop = True
-        else:
-            f.write('\n' + text)  
-elif mode == 'r+':
-    end = False
-    while end == False:
-        mode2 = input('Read, write or stop: ')
-        mode2.lower()
-        if mode2 == 'stop':
-            end == True
-        elif mode2 == 'read':
-            print(f.read())
-        else:
-            writeToFile(file, 'w')
-elif mode == 'x':
-    if not isfile(file):  
-        print('New file created.')
-    write = input("Would you like to change the file? If so, type 'w' or 'a', depending on edit mode: ")
-    if write == 'a':
-        mode = 'a'
-        writeToFile(file, mode)
-    elif mode == 'w':
-        mode = 'w'
-        writeToFile(file, mode)
+namelab = tk.Label(text='Enter Filename Here (WITH EXTENSION)', master=enterToFile)
+nameent = tk.Entry(master=enterToFile)
+
+textlab = tk.Label(text='Enter Text Here', master=enterToFile)
+textwindow = tk.Text(master=enterToFile)
+
+filename = ''
+text = ''
+
+namelab.pack()
+nameent.pack()
+
+textlab.pack()
+textwindow.pack(padx=5,pady=5)
+
+#File Options
+optionsFrame = tk.Frame(height=300, width=100, master=textEditorWindow)
+
+option = tk.IntVar(value=1,master=textEditorWindow)
+optionslab = tk.Label(text='File Mode:', master=optionsFrame)
+O1 = tk.Radiobutton(master=optionsFrame, text='Read', variable=option,value=1)
+O2 = tk.Radiobutton(master=optionsFrame, text='Write', variable=option,value=2)
+O3 = tk.Radiobutton(master=optionsFrame, text='Append', variable=option,value=3)
+optionslab.pack()
+O1.pack(anchor=tk.W)
+O2.pack(anchor=tk.W)
+O3.pack(anchor=tk.W)
+O1.invoke()
+
+enterToFile.pack(side=tk.RIGHT)
+optionsFrame.pack(side=tk.RIGHT)
+
+f = open(r'TextFiles\Text Editor\instructions.txt')
+textwindow.insert('1.0', f.read())
+f.close()
+
+def writeFile():
+	global filename
+	global text
+	global textwindow
+	filename = nameent.get()
+	text = textwindow.get('1.0', tk.END)
+	mode = option.get()
+	print(mode, '-', option.get())
+	
+	if mode == 1:
+		if isfile(filename):
+			textwindow.delete('1.0', tk.END)
+			f = open(filename, 'r')
+			text = f.read()
+			f.close()
+			textwindow.insert('1.0', text)
+		else:
+			textwindow.insert('1.0', "The file does not exist.")
+	elif mode == 2:
+		f = open(filename, 'w')
+		f.write(text)
+		f.close()
+	elif mode == 3:
+		if isfile(filename):
+			f = open(filename, 'a')
+			f.write(text)
+			f.close()
+		else:
+			textwindow.insert('1.0', "The file does not exist.")
+
+finbut = tk.Button(text='Commit', master=optionsFrame, command=writeFile)
+finbut.pack(padx=5,pady=5)
+
+textEditorWindow.mainloop()

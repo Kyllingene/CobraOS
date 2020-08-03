@@ -1,0 +1,19 @@
+Rules for the filename text zone:
+  1: If you want to do a file within the folder containing this file, do the
+extension out of that folder. Ex: 'TextFiles\\Text Editor\\instructions.txt'
+  2: Include the extension (.txt, .json, .py)
+  3: Make all backslashes double. Otherwise, it could be seen as a truncated escape code, throwing an error.
+
+File Directories for CobraOS:
+
+   C:\Users\<os_user_name>\AppData\Local\Programs\Python\Python38-32\CobraOS
+		^ CobraOS Package Directory ^
+
+<CobraOS_Package_Directory>\TextFiles
+		^ CobraOS Directory for all save files ^
+
+<CobraOS_Save_Directory>\Saves
+		^ CobraOS Directory for all game saves ^
+
+CobraOS_Save_Directory\TextEditor
+		^ CobraOS Suggested save directory for .txts ^

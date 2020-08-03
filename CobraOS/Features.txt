@@ -1,0 +1,6 @@
+Current:
+	A custom username/password system.
+	A text editor, with functions for making, reading, and writing files.
+	A game with seperate saves for different users.
+Future:
+	More games.
