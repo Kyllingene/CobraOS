@@ -121,7 +121,7 @@ while end == False:
             
         #If action is 'open torus typer':
         elif action == 'open torus typer':
-            run_module('tautyp')
+            run_module('totyp_text')
             
         #If none of the above:
         else:
